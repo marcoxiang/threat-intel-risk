@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Threat Intel Risk Statement Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <header>
+        <h1>Cyber Threat Intelligence Risk Statement Generator</h1>
+        <p>
+          Aggregate CTI from structured JSON, uploaded PDF reports, and blog links to produce risk
+          statements and incident tables.
+        </p>
+      </header>
+
+      <section class="card input-card">
+        <h2>1) Structured Threat Reports (Optional JSON Array)</h2>
+        <p class="hint">
+          JSON report format: <code>source</code>, <code>incident</code>, <code>threatActor</code>,
+          <code>industry</code>, <code>severity</code> (1-5), <code>confidence</code> (0-1).
+        </p>
+        <textarea id="reportInput" aria-label="Threat report JSON input"></textarea>
+
+        <h2>2) Upload PDF Reports</h2>
+        <p class="hint">
+          Upload one or more PDFs. The app extracts text and infers incident traits using heuristics.
+        </p>
+        <input id="pdfInput" type="file" accept="application/pdf" multiple />
+
+        <h2>3) Blog / Intel URLs</h2>
+        <p class="hint">
+          Enter one URL per line. The app attempts to fetch and extract summary text. Some sites may block
+          cross-origin requests from browsers.
+        </p>
+        <textarea id="urlInput" class="small-textarea" placeholder="https://example.com/threat-report"></textarea>
+
+        <div class="actions">
+          <button id="loadSampleBtn">Load Sample Data</button>
+          <button id="generateBtn" class="primary">Generate Risk Statements</button>
+        </div>
+
+        <p id="errorText" class="error" role="alert"></p>
+        <ul id="warningList" class="warning-list"></ul>
+      </section>
+
+      <section class="card results-card">
+        <h2>Aggregated Incident View</h2>
+        <div id="aggregationSummary" class="summary-grid"></div>
+
+        <h2>Risk Statements</h2>
+        <ul id="riskStatements" class="risk-list"></ul>
+
+        <h2>Incident Table</h2>
+        <div class="table-wrap">
+          <table id="incidentTable">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>Incident</th>
+                <th>Threat Actor</th>
+                <th>Industry</th>
+                <th>Severity</th>
+                <th>Confidence</th>
+              </tr>
+            </thead>
+            <tbody id="incidentTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
