@@ -1,0 +1,109 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: threatintel
+      POSTGRES_USER: threatintel
+      POSTGRES_PASSWORD: threatintel
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  minio:
+    image: minio/minio:latest
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_URL: postgresql+psycopg://threatintel:threatintel@postgres:5432/threatintel
+      REDIS_URL: redis://redis:6379/0
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: threatintel
+      MINIO_SECURE: "false"
+      INGESTION_SYNC: "false"
+      UPLOAD_DIR: /app/uploads
+      ALLOWED_ROLES: Analyst,Reviewer,Admin
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    depends_on:
+      - postgres
+      - redis
+      - minio
+    volumes:
+      - ./uploads:/app/uploads
+    ports:
+      - "8000:8000"
+
+  worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: celery -A app.worker.celery_app.celery_app worker --loglevel=INFO
+    environment:
+      DATABASE_URL: postgresql+psycopg://threatintel:threatintel@postgres:5432/threatintel
+      REDIS_URL: redis://redis:6379/0
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: threatintel
+      MINIO_SECURE: "false"
+      INGESTION_SYNC: "false"
+      UPLOAD_DIR: /app/uploads
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    depends_on:
+      - api
+      - redis
+      - postgres
+    volumes:
+      - ./uploads:/app/uploads
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+      API_INTERNAL_URL: http://api:8000/api/v1
+      NEXT_PUBLIC_DEMO_USER: analyst
+      NEXT_PUBLIC_DEMO_ROLE: Reviewer
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+
+  reverse-proxy:
+    image: caddy:2.8-alpine
+    depends_on:
+      - frontend
+      - api
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  postgres_data:
+  minio_data:
+  caddy_data:
+  caddy_config:
