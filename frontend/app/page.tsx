@@ -1,27 +1,30 @@
 export default function HomePage() {
   return (
-    <main>
-      <div className="card">
-        <h1>ThreatIntelRisk v1</h1>
+    <main className="hero-page">
+      <section className="hero-topbar">
+        <span className="brand">ThreatIntelRisk</span>
+        <div className="hero-links">
+          <span>01 Home</span>
+          <span>02 Intake</span>
+          <span>03 Risks</span>
+          <span>04 Dashboard</span>
+        </div>
+      </section>
+
+      <section className="hero-art" aria-hidden>
+        <div className="orb orb-a" />
+        <div className="orb orb-b" />
+        <div className="orb orb-c" />
+        <div className="orb orb-d" />
+      </section>
+
+      <section className="hero-copy">
+        <h1>Threat intelligence, translated into business risk.</h1>
         <p>
-          Ingest threat intelligence from PDFs and websites, generate business-focused risk statements,
-          and automatically surface <strong>Emerging Risks</strong> using trend and novelty signals.
+          Ingest intelligence feeds and documents, extract evidence-backed statements, and surface
+          emerging risks with trend and novelty signals.
         </p>
-      </div>
-      <div className="grid">
-        <div className="card">
-          <h3>Strict Citation Policy</h3>
-          <p>Analyst approvals are blocked unless key statements are backed by evidence snippets.</p>
-        </div>
-        <div className="card">
-          <h3>FAIR-lite Scoring</h3>
-          <p>Likelihood and loss factors are normalized into a 0-100 business risk score.</p>
-        </div>
-        <div className="card">
-          <h3>Analyst Review Gate</h3>
-          <p>Risk statements are drafted by AI and must be approved or rejected by reviewers/admins.</p>
-        </div>
-      </div>
+      </section>
     </main>
   );
 }
