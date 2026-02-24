@@ -1,14 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap');
 
 :root {
-  --bg: #f4f6ef;
-  --ink: #0c1a14;
-  --panel: #ffffff;
-  --line: #d7dfcf;
-  --accent: #0b7a5f;
-  --accent-2: #d67a1c;
-  --muted: #5b665f;
-  --danger: #c83434;
+  --bg: #06070a;
+  --ink: #f4f5f8;
+  --panel: rgba(255, 255, 255, 0.04);
+  --line: rgba(255, 255, 255, 0.14);
+  --accent: #8b5cf6;
+  --accent-2: #f97316;
+  --muted: #b2b6c4;
+  --danger: #ff5d5d;
 }
 
 * {
@@ -21,10 +21,10 @@ body {
   padding: 0;
   color: var(--ink);
   background:
-    radial-gradient(circle at 15% 20%, #d5e8db 0, transparent 24%),
-    radial-gradient(circle at 85% 10%, #f2d8bb 0, transparent 28%),
+    radial-gradient(circle at 20% 20%, rgba(118, 73, 255, 0.2) 0, transparent 35%),
+    radial-gradient(circle at 80% 18%, rgba(249, 115, 22, 0.15) 0, transparent 30%),
     var(--bg);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 a {
@@ -47,29 +47,37 @@ a {
 
 .nav a {
   border: 1px solid var(--line);
-  background: var(--panel);
+  background: rgba(255, 255, 255, 0.02);
+  color: #f8f8f9;
   padding: 8px 12px;
   border-radius: 999px;
   font-size: 14px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.nav a:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .card {
   border: 1px solid var(--line);
   background: var(--panel);
+  backdrop-filter: blur(6px);
   border-radius: 14px;
   padding: 16px;
   margin-bottom: 14px;
-  box-shadow: 0 10px 24px rgba(12, 26, 20, 0.06);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
 }
 
 .feedback-success {
-  border-color: #6fb68f;
-  background: #f1fbf5;
+  border-color: #5ecf9f;
+  background: rgba(94, 207, 159, 0.1);
 }
 
 .feedback-error {
-  border-color: #dd7d7d;
-  background: #fff3f3;
+  border-color: #ff8080;
+  background: rgba(255, 128, 128, 0.12);
 }
 
 .grid {
@@ -101,18 +109,20 @@ select {
   padding: 10px;
   font-family: inherit;
   font-size: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink);
 }
 
 button {
   width: auto;
   cursor: pointer;
-  background: var(--accent);
+  background: linear-gradient(135deg, #6d28d9, #8b5cf6);
   color: #fff;
   border: none;
 }
 
 button.secondary {
-  background: var(--accent-2);
+  background: linear-gradient(135deg, #ea580c, #f97316);
 }
 
 button.danger {
@@ -138,8 +148,93 @@ pre {
 }
 
 .tag.emerging {
-  background: #fde5cc;
-  border-color: #f0be85;
+  background: rgba(249, 115, 22, 0.2);
+  border-color: rgba(249, 115, 22, 0.6);
+}
+
+.hero-page {
+  min-height: 72vh;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 24px;
+  padding: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+}
+
+.hero-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  color: #ebedf4;
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.hero-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  color: #c3c8d8;
+  font-size: 13px;
+}
+
+.hero-art {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 0.8fr;
+  align-items: end;
+  gap: 24px;
+  margin: 10px 0 28px;
+}
+
+.orb {
+  border-radius: 90px;
+  min-height: 140px;
+  box-shadow: inset -20px -20px 40px rgba(0, 0, 0, 0.26), inset 10px 10px 24px rgba(255, 255, 255, 0.16);
+}
+
+.orb-a {
+  background: conic-gradient(from 120deg, #f87171, #38bdf8, #f97316, #f87171);
+  border-radius: 90px 90px 18px 18px;
+}
+
+.orb-b {
+  min-height: 180px;
+  background: conic-gradient(from 170deg, #a78bfa, #3b82f6, #c084fc, #a78bfa);
+}
+
+.orb-c {
+  min-height: 210px;
+  background: conic-gradient(from 210deg, #fbbf24, #a78bfa, #fde68a, #fbbf24);
+}
+
+.orb-d {
+  min-height: 140px;
+  border-radius: 999px;
+  background: conic-gradient(from 120deg, #f472b6, #fb7185, #fca5a5, #f472b6);
+}
+
+.hero-copy h1 {
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  max-width: 740px;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.hero-copy p {
+  max-width: 640px;
+  color: #d0d4df;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 840px) {
+  .hero-art {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -149,5 +244,13 @@ pre {
 
   .nav {
     gap: 8px;
+  }
+
+  .hero-links {
+    display: none;
+  }
+
+  .hero-art {
+    gap: 14px;
   }
 }
